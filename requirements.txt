@@ -1,0 +1,2 @@
+djoser
+djangorestframework-simplejwt==4.7.2
