@@ -10,7 +10,6 @@ class Tag(models.Model):
     title = models.CharField(
         max_length=50,
         unique=True,
-        default="#ffffff",
         verbose_name='Название тэга')
     hexcolor = models.CharField(
         max_length=7,
@@ -33,13 +32,14 @@ class Ingredient(models.Model):
     """Модель ингридиента"""
     title = models.CharField(
         max_length=200,
-        verbose_name='Название рецепта')
+        verbose_name='Название ингридиента')
 
     units = models.CharField(
         max_length=200,
         verbose_name='Единицы измерения')
 
     class Meta:
+        ordering = ('title',)
         verbose_name = 'Ингредиент'
         verbose_name_plural = 'Ингредиенты'
 
@@ -52,7 +52,7 @@ class Recipe(models.Model):
         User,
         related_name='recipes',
         on_delete=models.CASCADE,
-        verbose_name='Автор',
+        verbose_name='Автор рецепта',
     )
     title = models.CharField(
         max_length=200,
@@ -80,14 +80,14 @@ class Recipe(models.Model):
     cooking_time = models.PositiveSmallIntegerField(
         'Время приготовления',
         validators=[
-            MinValueValidator(1, message='Минимальное значение 1!'),
-            MaxValueValidator(300, message='Максимальное значение 300!')
+            MinValueValidator(1, message='Минимальное значение 1!')
         ]
     )
 
     class Meta:
         verbose_name = 'Рецепт'
         verbose_name_plural = 'Рецепты'
+        ordering = ('-pub_date',)
 
 
 class IngredientInRecipe(models.Model):
@@ -107,16 +107,20 @@ class IngredientInRecipe(models.Model):
         'Количество',
         validators=[
             MinValueValidator(1, message='Минимальное количество 1!'),
-            MaxValueValidator(300,
-                              message='Максимальное значение 300!')
         ]
     )
 
     class Meta:
         verbose_name = 'Ингредиент в рецепте'
         verbose_name_plural = 'Ингредиенты в рецептах'
+        constraints = [
+            models.UniqueConstraint(
+                fields=('recipe', 'ingredient'),
+                name='unique_ingredients_in_the_recipe'
+            )
+        ]
 
-    # def __str__(self):
-    #    return
+    def __str__(self):
+        return f'{self.ingredient} {self.recipe}'
 
 
