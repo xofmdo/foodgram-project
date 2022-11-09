@@ -130,3 +130,7 @@ dmypy.json
 
 # .idea
 .idea
+
+.DS_Store
+backend/.DS_Store
+frontend/.DS_Store
