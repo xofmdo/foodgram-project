@@ -25,6 +25,7 @@ INSTALLED_APPS = [
     'api.apps.ApiConfig',
     'recipes.apps.RecipesConfig',
     'users.apps.UsersConfig',
+    'drf_yasg',
 ]
 
 INTERNAL_IPS = [
@@ -125,20 +126,6 @@ REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': [
         'rest_framework.authentication.TokenAuthentication',
     ],
-
-    'PAGE_SIZE': 6,
 }
 
-DJOSER = {
-    'HIDE_USERS': False,
-    "LOGIN_FIELD": "email",
-    'PERMISSIONS': {
-        'user_list': ['rest_framework.permissions.AllowAny'],
-        'user': ['djoser.permissions.CurrentUserOrAdminOrReadOnly']
-    },
-    "SERIALIZERS": {
-        "user_create": "api.serializers.users.UsersCreateSerializer",
-        "user": "api.serializers.users.UsersSerializer",
-        "current_user": "api.serializers.users.UsersSerializer",
-    },
-}
+DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
