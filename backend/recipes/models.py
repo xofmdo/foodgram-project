@@ -1,5 +1,5 @@
 from django.contrib.auth import get_user_model
-from django.core.validators import (MinValueValidator, MaxValueValidator)
+from django.core.validators import (MinValueValidator, )
 from django.db import models
 
 User = get_user_model()
@@ -87,7 +87,6 @@ class Recipe(models.Model):
     class Meta:
         verbose_name = 'Рецепт'
         verbose_name_plural = 'Рецепты'
-        ordering = ('-pub_date',)
 
 
 class IngredientInRecipe(models.Model):
