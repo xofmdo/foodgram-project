@@ -5,45 +5,19 @@ from .models import Ingredient, IngredientInRecipe, Recipe, Tag
 
 @register(Ingredient)
 class IngredientAdmin(ModelAdmin):
-    list_display = (
-        'title', 'units',
-    )
-    search_fields = (
-        'title',
-    )
-    list_filter = (
-        'title',
-    )
-
+    list_display = ('pk', 'title', 'units')
+    search_fields = ('name',)
 
 @register(Recipe)
 class RecipeAdmin(ModelAdmin):
-    list_display = (
-        'title', 'author',
-    )
-    fields = (
-        ('title', 'cooking_time',),
-        ('author', 'tags',),
-        ('description',),
-        ('image',),
-    )
-    raw_id_fields = ('author', )
-    search_fields = (
-        'title', 'author',
-    )
-    list_filter = (
-        'title', 'author__username',
-    )
+    list_display = ('pk', 'title', 'author',)
+    list_filter = ('author', 'title', 'tags')
+    search_fields = ('title',)
 
 
 @register(Tag)
 class TagAdmin(ModelAdmin):
-    list_display = (
-        'title', 'color', 'slug',
-    )
-    search_fields = (
-        'title', 'color'
-    )
+    list_display = ('pk', 'title', 'slug')
 
 
 @register(IngredientInRecipe)

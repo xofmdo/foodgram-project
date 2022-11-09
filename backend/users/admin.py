@@ -6,15 +6,7 @@ from .models import User
 
 @register(User)
 class MyUserAdmin(UserAdmin):
-    list_display = (
-        'username', 'first_name', 'last_name', 'email',
-    )
-    fields = (
-        'username', 'email', 'first_name', 'last_name',
-    )
-    search_fields = (
-        'username', 'email',
-    )
-    list_filter = (
-        'first_name', 'email',
-    )
+    list_display = ('pk', 'username', 'email', 'first_name', 'last_name',)
+    list_filter = ('username', 'email')
+    search_fields = ('username', 'email')
+
