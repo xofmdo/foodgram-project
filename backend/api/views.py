@@ -1,18 +1,13 @@
 from rest_framework import viewsets
 from rest_framework.permissions import AllowAny
 
-from backend.recipes.models import (
+from recipes.models import (
     Ingredient,
-    IngredientInRecipe,
-    Recipe,
     Tag
 )
 from .serializer import (
     TagSerializer,
     IngredientSerializer,
-    IngredientInRecipeSerializer,
-    RecipeSerializer,
-    AddIngredientSerializer,
 )
 
 
