@@ -1,12 +1,16 @@
 from django.contrib.admin import ModelAdmin, register
 
-from .models import Ingredient, IngredientInRecipe, Recipe, Tag
+from .models import (
+    Ingredient, IngredientInRecipe, Recipe,
+    Tag, ShoppingCart, Follow, Favorite
+)
 
 
 @register(Ingredient)
 class IngredientAdmin(ModelAdmin):
     list_display = ('pk', 'title', 'units')
     search_fields = ('name',)
+
 
 @register(Recipe)
 class RecipeAdmin(ModelAdmin):
@@ -23,3 +27,20 @@ class TagAdmin(ModelAdmin):
 @register(IngredientInRecipe)
 class IngredientInRecipe(ModelAdmin):
     pass
+
+
+@register(ShoppingCart)
+class ShoppingCartAdmin(ModelAdmin):
+    list_display = ('id', 'users', 'recipe')
+
+
+@register(Follow)
+class FollowAdmin(ModelAdmin):
+    list_display = ('pk', 'user', 'author')
+    search_fields = ('user', 'author')
+    list_filter = ('user', 'author')
+
+
+@register(Favorite)
+class FavoriteAdmin(ModelAdmin):
+    list_display = ('pk', 'user', 'recipe')
