@@ -31,7 +31,7 @@ class IngredientInRecipe(ModelAdmin):
 
 @register(ShoppingCart)
 class ShoppingCartAdmin(ModelAdmin):
-    list_display = ('id', 'users', 'recipe')
+    list_display = ('id', 'user', 'recipe')
 
 
 @register(Follow)
