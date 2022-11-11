@@ -8,30 +8,30 @@ from .models import (
 
 @register(Ingredient)
 class IngredientAdmin(ModelAdmin):
-    list_display = ('pk', 'title', 'units')
+    list_display = ('pk', 'name', 'measurement_unit')
     search_fields = ('name',)
 
 
 @register(Recipe)
 class RecipeAdmin(ModelAdmin):
-    list_display = ('pk', 'title', 'author',)
-    list_filter = ('author', 'title', 'tags')
-    search_fields = ('title',)
+    list_display = ('pk', 'name', 'author', 'created')
+    list_filter = ('author', 'name', 'tags')
+    search_fields = ('name',)
 
 
 @register(Tag)
 class TagAdmin(ModelAdmin):
-    list_display = ('pk', 'title', 'slug')
+    list_display = ('pk', 'name', 'color', 'slug')
 
 
 @register(IngredientInRecipe)
 class IngredientInRecipe(ModelAdmin):
-    pass
+    list_display = ('pk', 'recipe', 'ingredient', 'amount')
 
 
 @register(ShoppingCart)
 class ShoppingCartAdmin(ModelAdmin):
-    list_display = ('id', 'user', 'recipe')
+    list_display = ('pk', 'user', 'recipe')
 
 
 @register(Follow)
