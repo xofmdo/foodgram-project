@@ -22,13 +22,6 @@ class User(AbstractUser):
         help_text='Введите ваш логин'
     )
 
-    password = models.CharField(
-        max_length=100,
-        blank=False,
-        verbose_name='Пароль',
-        help_text='Введите пароль'
-    )
-
     first_name = models.TextField(
         verbose_name='Имя',
         blank=False,
@@ -42,5 +35,9 @@ class User(AbstractUser):
         help_text='Введите фамилию'
     )
 
+    class Meta:
+        verbose_name = 'Пользователь'
+        verbose_name_plural = 'Пользователи'
+        ordering = ('id',)
     def __str__(self):
         return self.username
