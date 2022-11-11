@@ -27,8 +27,8 @@ class TagSerializer(ModelSerializer):
 
     class Meta:
         model = Tag
-        fields = ('id', 'title', 'hexcolor', 'slug')
-        read_only_fields = ('id', 'title', 'hexcolor', 'slug',)
+        fields = ('id', 'name', 'color', 'slug')
+        read_only_fields = ('id', 'name', 'color', 'slug')
 
 
 class IngredientSerializer(ModelSerializer):
@@ -36,20 +36,20 @@ class IngredientSerializer(ModelSerializer):
 
     class Meta:
         model = Ingredient
-        fields = ('id', 'title', 'units',)
-        read_only_fields = ('id', 'title', 'units',)
+        fields = ('id', 'name', 'measurement_unit')
+        read_only_fields = ('id', 'name', 'measurement_unit')
 
 
 class IngredientInRecipeSerializer(serializers.ModelSerializer):
     """Сериализатор для модели ингридиентов в рецепте."""
 
     id = serializers.ReadOnlyField(source='ingredient.id')
-    title = serializers.ReadOnlyField(source='ingredient.title')
-    units = serializers.ReadOnlyField(source='ingredient.units')
+    name = serializers.ReadOnlyField(source='ingredient.title')
+    measurement_unit = serializers.ReadOnlyField(source='ingredient.units')
 
     class Meta:
         model = IngredientInRecipe
-        fields = ('id', 'title', 'units', 'amount')
+        fields = ('id', 'name', 'measurement_unit', 'amount')
 
 
 class RecipeSerializer(ModelSerializer):
