@@ -1,7 +1,10 @@
+from _csv import writer
+
+from django.http import HttpResponse
 from django.shortcuts import get_object_or_404
 from djoser.serializers import TokenCreateSerializer, TokenSerializer
 from djoser.views import UserViewSet, TokenCreateView
-from rest_framework import viewsets, status
+from rest_framework import viewsets, status, serializers
 from rest_framework.decorators import action
 from rest_framework.pagination import LimitOffsetPagination
 from rest_framework.permissions import (
@@ -20,7 +23,7 @@ from .serializer import (
     TagSerializer,
     IngredientSerializer,
     RecipeSerializer, CustomUserSerializer, CreateRecipeSerializer,
-    FavoriteSerializer, FollowSerializer,
+    FavoriteSerializer, FollowSerializer, RecipeInFavoriteSerializer,
 )
 
 
@@ -76,14 +79,14 @@ class CustomUserViewSet(UserViewSet):
     def subscribe(self, request, id):
         user = request.user
         author = get_object_or_404(User, id=id)
-        change_status_subscription = Follow.objects.filter(
+        change_subscription_status = Follow.objects.filter(
             user=user.id, author=author.id
         )
         if request.method == 'POST':
             if user == author:
-                return Response('Вы пытаетесь подписаться на себя!',
+                return Response('Вы пытаетесь подписаться на себя!!',
                                 status=status.HTTP_400_BAD_REQUEST)
-            if change_status_subscription.exists():
+            if change_subscription_status.exists():
                 return Response(f'Вы теперь подписаны на {author}',
                                 status=status.HTTP_400_BAD_REQUEST)
             subscribe = Follow.objects.create(
@@ -93,10 +96,28 @@ class CustomUserViewSet(UserViewSet):
             subscribe.save()
             return Response(f'Вы подписались на {author}',
                             status=status.HTTP_201_CREATED)
-        if change_status_subscription.exists():
-            change_status_subscription.delete()
+        if change_subscription_status.exists():
+            change_subscription_status.delete()
             return Response(f'Вы отписались от {author}',
                             status=status.HTTP_204_NO_CONTENT)
         return Response(f'Вы не подписаны на {author}',
                         status=status.HTTP_400_BAD_REQUEST)
 
+
+class RecipeViewSet(ModelViewSet):
+    """ViewSet для обработки запросов, связанных с рецептами."""
+    queryset = Recipe.objects.all()
+    lookup_field = 'id'
+    pagination_class = CustomPagination
+    permission_classes = (AllowAny,)
+
+    def get_serializer_class(self):
+        if self.action in ('list', 'retrieve'):
+            return RecipeSerializer
+        elif self.action in ('create', 'partial_update'):
+            return CreateRecipeSerializer
+
+    def get_serializer_context(self):
+        context = super().get_serializer_context()
+        context.update({'request': self.request})
+        return context
