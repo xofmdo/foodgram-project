@@ -126,6 +126,8 @@ REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': [
         'rest_framework.authentication.TokenAuthentication',
     ],
+
+    'PAGE_SIZE': 6,
 }
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
@@ -138,7 +140,7 @@ DJOSER = {
 
     'SERIALIZERS': {
         'user': 'api.serializer.CustomUserSerializer',
-        'user_create': 'api.serializer.CustomUserSerializer',
+        'user_create': 'api.serializer.CustomCreateUserSerializer',
         'current_user': 'api.serializer.CustomUserSerializer',
     }
 }

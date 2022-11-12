@@ -23,7 +23,7 @@ from .serializer import (
     TagSerializer,
     IngredientSerializer,
     RecipeSerializer, CustomUserSerializer, CreateRecipeSerializer,
-    FavoriteSerializer, FollowSerializer, RecipeInFavoriteSerializer,
+    FollowSerializer,
 )
 
 
