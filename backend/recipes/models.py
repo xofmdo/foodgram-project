@@ -154,6 +154,8 @@ class TagInRecipe(models.Model):
     def __str__(self):
         """Метод строкового представления модели."""
         return f'{self.tag} {self.recipe}'
+
+
 class ShoppingCart(models.Model):
     """Модель для описания формирования покупок """
     user = models.ForeignKey(
