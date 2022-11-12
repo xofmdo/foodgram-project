@@ -128,6 +128,32 @@ class IngredientInRecipe(models.Model):
         return f'{self.ingredient} {self.recipe}'
 
 
+class TagInRecipe(models.Model):
+    """Создание модели тегов рецепта."""
+    tag = models.ForeignKey(
+        Tag,
+        on_delete=models.CASCADE,
+        verbose_name='Теги',
+        help_text='Выберите теги рецепта'
+    )
+    recipe = models.ForeignKey(
+        Recipe,
+        on_delete=models.CASCADE,
+        verbose_name='Рецепт',
+        help_text='Выберите рецепт')
+
+    class Meta:
+        """Параметры модели."""
+        verbose_name = 'Тег рецепта'
+        verbose_name_plural = 'Теги рецепта'
+        constraints = [
+            models.UniqueConstraint(fields=['tag', 'recipe'],
+                                    name='unique_tagrecipe')
+        ]
+
+    def __str__(self):
+        """Метод строкового представления модели."""
+        return f'{self.tag} {self.recipe}'
 class ShoppingCart(models.Model):
     """Модель для описания формирования покупок """
     user = models.ForeignKey(
