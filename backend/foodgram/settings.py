@@ -26,6 +26,7 @@ INSTALLED_APPS = [
     'recipes.apps.RecipesConfig',
     'users.apps.UsersConfig',
     'drf_yasg',
+    'django_filters',
 ]
 
 INTERNAL_IPS = [
@@ -134,15 +135,22 @@ REST_FRAMEWORK = {
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
-DJOSER = {
-    'PERMISSIONS': {
-        'user_list': ['rest_framework.permissions.AllowAny'],
-        'user': ['rest_framework.permissions.IsAuthenticated'],
-    },
 
+DJOSER = {
+    'LOGIN_FIELD': 'email',
+    'HIDE_USERS': False,
+    'PASSWORD_CHANGED_EMAIL_CONFIRMATION': False,
+    'TOKEN_MODEL': 'rest_framework.authtoken.models.Token',
     'SERIALIZERS': {
         'user': 'api.serializer.CustomUserSerializer',
         'user_create': 'api.serializer.CustomCreateUserSerializer',
         'current_user': 'api.serializer.CustomUserSerializer',
-    }
+    },
+    'PERMISSIONS': {
+        'user': ['djoser.permissions.CurrentUserOrAdminOrReadOnly'],
+        'user_list': ['rest_framework.permissions.AllowAny']
+    },
 }
+
+
+CSV_FILES_DIR = os.path.join(BASE_DIR, 'data')
