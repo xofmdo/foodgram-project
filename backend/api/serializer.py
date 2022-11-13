@@ -262,3 +262,11 @@ class FollowSerializer(CustomUserSerializer):
     @staticmethod
     def get_recipes_count(obj):
         return obj.recipes.count()
+
+
+class AddFavoritesSerializer(serializers.ModelSerializer):
+    image = Base64ImageField()
+
+    class Meta:
+        model = Recipe
+        fields = ('id', 'name', 'image', 'cooking_time')
