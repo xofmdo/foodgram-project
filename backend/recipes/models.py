@@ -1,3 +1,4 @@
+from colorfield.fields import ColorField
 from django.contrib.auth import get_user_model
 from django.core.validators import (MinValueValidator, )
 from django.db import models
@@ -11,9 +12,9 @@ class Tag(models.Model):
         max_length=50,
         unique=True,
         verbose_name='Название тэга')
-    color = models.CharField(
+    color = ColorField(
         max_length=7,
-        default="#ffffff",
+        unique=True,
         verbose_name='Цветовой HEX-код')
     slug = models.SlugField(
         max_length=100,
@@ -49,6 +50,7 @@ class Ingredient(models.Model):
 
 class Recipe(models.Model):
     """Модель для описания рецепта"""
+
     author = models.ForeignKey(
         User,
         related_name='recipes',
@@ -57,10 +59,10 @@ class Recipe(models.Model):
     )
     name = models.CharField(
         max_length=200,
-        verbose_name='Название ингридиента'
+        verbose_name='Название рецепта'
     )
     image = models.ImageField(
-        verbose_name='Картинка',
+        verbose_name='Фотография рецепта',
         upload_to='recipes/',
         blank=True
     )
@@ -94,6 +96,9 @@ class Recipe(models.Model):
         verbose_name_plural = 'Рецепты'
         ordering = ('-created',)
 
+    def __str__(self):
+        return self.name
+
 
 class IngredientInRecipe(models.Model):
     """Модель для описания количества ингридиентов в отдельных рецептах"""
@@ -107,9 +112,10 @@ class IngredientInRecipe(models.Model):
         Ingredient,
         on_delete=models.CASCADE,
         verbose_name='Ингредиент',
+        related_name='in_recipe'
     )
     amount = models.PositiveSmallIntegerField(
-        'Количество',
+        verbose_name='Количество',
         validators=[
             MinValueValidator(1, message='Минимальное количество 1!'),
         ]
