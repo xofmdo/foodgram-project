@@ -6,12 +6,16 @@ from foodgram.settings import CSV_FILES_DIR
 from recipes.models import Ingredient
 
 
+# python3 manage.py utils - команда для загрузки ингредиентов
+
 class Command(BaseCommand):
+    """Команда для загрузки ингредиентов в базу данных """
+
     help = 'Загрузка ингредиентов в базу данных'
 
     def handle(self, *args, **kwargs):
         with open(
-            f'{CSV_FILES_DIR}/ingredients.csv', encoding='utf-8'
+                f'{CSV_FILES_DIR}/ingredients.csv', encoding='utf-8'
         ) as file:
             reader = csv.reader(file)
             next(reader)
@@ -23,5 +27,4 @@ class Command(BaseCommand):
                 for row in reader
             ]
             Ingredient.objects.bulk_create(ingredients)
-
-# python3 manage.py utils
+            print('Ингредиенты в базу данных загружены')

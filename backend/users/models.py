@@ -28,9 +28,13 @@ class User(AbstractUser):
     REQUIRED_FIELDS = ['username', 'first_name', 'last_name']
 
     class Meta:
+        """Мета-параметры модели"""
+
         verbose_name = 'Пользователь'
         verbose_name_plural = 'Пользователи'
         ordering = ('id',)
 
     def __str__(self):
+        """Строковое представление модели"""
+
         return self.username

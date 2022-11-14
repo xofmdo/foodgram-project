@@ -8,6 +8,7 @@ User = get_user_model()
 
 class Tag(models.Model):
     """Модель для описания тега"""
+
     name = models.CharField(
         max_length=50,
         unique=True,
@@ -22,6 +23,8 @@ class Tag(models.Model):
         verbose_name='Уникальный слаг')
 
     class Meta:
+        """Мета-параметры модели"""
+
         verbose_name = 'Тег'
         verbose_name_plural = 'Теги'
         constraints = (
@@ -32,11 +35,14 @@ class Tag(models.Model):
         )
 
     def __str__(self):
+        """Метод строкового представления модели."""
+
         return self.name
 
 
 class Ingredient(models.Model):
     """Модель для описания ингредиента"""
+
     name = models.CharField(
         max_length=200,
         verbose_name='Название ингредиента')
@@ -46,11 +52,15 @@ class Ingredient(models.Model):
         verbose_name='Единицы измерения')
 
     class Meta:
+        """Мета-параметры модели"""
+
         ordering = ('name',)
         verbose_name = 'Ингредиент'
         verbose_name_plural = 'Ингредиенты'
 
     def __str__(self):
+        """Метод строкового представления модели."""
+
         return f'{self.name}, {self.measurement_unit}'
 
 
@@ -98,16 +108,21 @@ class Recipe(models.Model):
     )
 
     class Meta:
+        """Мета-параметры модели"""
+
         verbose_name = 'Рецепт'
         verbose_name_plural = 'Рецепты'
         ordering = ('-created',)
 
     def __str__(self):
+        """Метод строкового представления модели."""
+
         return self.name
 
 
 class IngredientInRecipe(models.Model):
     """Модель для описания количества ингредиентов в отдельных рецептах"""
+
     recipe = models.ForeignKey(
         Recipe,
         on_delete=models.CASCADE,
@@ -128,6 +143,8 @@ class IngredientInRecipe(models.Model):
     )
 
     class Meta:
+        """Мета-параметры модели"""
+
         verbose_name = 'Ингредиент в рецепте'
         verbose_name_plural = 'Ингредиенты в рецептах'
         constraints = [
@@ -138,11 +155,14 @@ class IngredientInRecipe(models.Model):
         ]
 
     def __str__(self):
+        """Метод строкового представления модели."""
+
         return f'{self.ingredient} {self.recipe}'
 
 
 class TagInRecipe(models.Model):
     """Создание модели тегов рецепта."""
+
     tag = models.ForeignKey(
         Tag,
         on_delete=models.CASCADE,
@@ -156,7 +176,8 @@ class TagInRecipe(models.Model):
         help_text='Выберите рецепт')
 
     class Meta:
-        """Параметры модели."""
+        """Мета-параметры модели"""
+
         verbose_name = 'Тег рецепта'
         verbose_name_plural = 'Теги рецепта'
         constraints = [
@@ -166,11 +187,13 @@ class TagInRecipe(models.Model):
 
     def __str__(self):
         """Метод строкового представления модели."""
+
         return f'{self.tag} {self.recipe}'
 
 
 class ShoppingCart(models.Model):
     """Модель для описания формирования покупок """
+
     user = models.ForeignKey(
         User,
         on_delete=models.CASCADE,
@@ -185,6 +208,8 @@ class ShoppingCart(models.Model):
     )
 
     class Meta:
+        """Мета-параметры модели"""
+
         verbose_name = 'Список покупок'
         verbose_name_plural = 'Списки покупок'
         constraints = [
@@ -194,11 +219,14 @@ class ShoppingCart(models.Model):
         ]
 
     def __str__(self):
+        """Метод строкового представления модели."""
+
         return f'{self.user} {self.recipe}'
 
 
 class Follow(models.Model):
     """ Модель для создания подписок на автора"""
+
     author = models.ForeignKey(
         User,
         related_name='follow',
@@ -213,6 +241,8 @@ class Follow(models.Model):
     )
 
     class Meta:
+        """Мета-параметры модели"""
+
         verbose_name = 'Подписка'
         verbose_name_plural = 'Подписки'
         constraints = [
@@ -222,6 +252,8 @@ class Follow(models.Model):
         ]
 
     def __str__(self):
+        """Метод строкового представления модели."""
+
         return f'{self.user} {self.author}'
 
 
@@ -242,6 +274,8 @@ class Favorite(models.Model):
     )
 
     class Meta:
+        """Мета-параметры модели"""
+
         verbose_name = 'Избранное'
         verbose_name_plural = 'Избранное'
         constraints = [
@@ -251,4 +285,6 @@ class Favorite(models.Model):
         ]
 
     def __str__(self):
+        """Метод строкового представления модели."""
+
         return f'{self.user} {self.recipe}'
