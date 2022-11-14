@@ -124,6 +124,7 @@ class RecipeViewSet(ModelViewSet):
 
     def get_serializer_class(self):
         """Метод для вызова определенного сериализатора. """
+
         if self.action in ('list', 'retrieve'):
             return RecipeSerializer
         elif self.action in ('create', 'partial_update'):
@@ -131,6 +132,7 @@ class RecipeViewSet(ModelViewSet):
 
     def get_serializer_context(self):
         """Метод для передачи контекста. """
+
         context = super().get_serializer_context()
         context.update({'request': self.request})
         return context
@@ -145,9 +147,9 @@ class RecipeViewSet(ModelViewSet):
     def favorite(self, request, pk):
         """Метод для управления избранными подписками """
 
+        user = request.user
+        recipe = get_object_or_404(Recipe, id=pk)
         if request.method == 'POST':
-            user = request.user
-            recipe = get_object_or_404(Recipe, id=pk)
             if Favorite.objects.filter(user=user, recipe=recipe).exists():
                 return Response(
                     {'errors': f'Повторно - \"{recipe.name}\" добавить нельзя,'
@@ -159,9 +161,7 @@ class RecipeViewSet(ModelViewSet):
             return Response(serializer.data, status=status.HTTP_201_CREATED)
 
         if request.method == 'DELETE':
-            user = request.user
-            recipe = get_object_or_404(Recipe, id=pk)
-            obj = Favorite.objects.filter(user=user, recipe__id=pk)
+            obj = Favorite.objects.filter(user=user, recipe=recipe)
             if obj.exists():
                 obj.delete()
                 return Response(status=status.HTTP_204_NO_CONTENT)
@@ -180,9 +180,10 @@ class RecipeViewSet(ModelViewSet):
     def shopping_cart(self, request, pk):
         """Метод для управления списком покупок"""
 
+        user = request.user
+        recipe = get_object_or_404(Recipe, id=pk)
+
         if request.method == 'POST':
-            user = request.user
-            recipe = get_object_or_404(Recipe, id=pk)
             if ShoppingCart.objects.filter(user=user, recipe=recipe).exists():
                 return Response(
                     {'errors': f'Повторно - \"{recipe.name}\" добавить нельзя,'
@@ -194,8 +195,6 @@ class RecipeViewSet(ModelViewSet):
             return Response(serializer.data, status=status.HTTP_201_CREATED)
 
         if request.method == 'DELETE':
-            user = request.user
-            recipe = get_object_or_404(Recipe, id=pk)
             obj = ShoppingCart.objects.filter(user=user, recipe__id=pk)
             if obj.exists():
                 obj.delete()
@@ -208,14 +207,14 @@ class RecipeViewSet(ModelViewSet):
 
     @staticmethod
     def ingredients_to_txt(ingredients):
-        """Метод для слияния в список для загрузки"""
+        """Метод для объединения ингредиентов в список для загрузки"""
 
         shopping_list = ''
         for ingredient in ingredients:
             shopping_list += (
-                f"{ingredient['ingredient__name']} "
-                f"({ingredient['ingredient__measurement_unit']}) - "
-                f"{ingredient['sum']}\n"
+                f"{ingredient['ingredient__name']}  - "
+                f"{ingredient['sum']}"
+                f"({ingredient['ingredient__measurement_unit']})\n"
             )
         return shopping_list
 
@@ -227,7 +226,7 @@ class RecipeViewSet(ModelViewSet):
         url_name='download_shopping_cart',
     )
     def download_shopping_cart(self, request):
-        """Метод для загрузки ингридиентов и их количества
+        """Метод для загрузки ингредиентов и их количества
          для выбранных рецептов"""
 
         ingredients = IngredientInRecipe.objects.filter(
