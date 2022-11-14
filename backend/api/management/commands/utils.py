@@ -23,3 +23,5 @@ class Command(BaseCommand):
                 for row in reader
             ]
             Ingredient.objects.bulk_create(ingredients)
+
+# python3 manage.py utils
