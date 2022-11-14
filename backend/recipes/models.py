@@ -24,16 +24,22 @@ class Tag(models.Model):
     class Meta:
         verbose_name = 'Тег'
         verbose_name_plural = 'Теги'
+        constraints = (
+            models.UniqueConstraint(
+                fields=('name', 'color', 'slug'),
+                name='unique_tags',
+            ),
+        )
 
     def __str__(self):
         return self.name
 
 
 class Ingredient(models.Model):
-    """Модель для описания ингридиента"""
+    """Модель для описания ингредиента"""
     name = models.CharField(
         max_length=200,
-        verbose_name='Название ингридиента')
+        verbose_name='Название ингредиента')
 
     measurement_unit = models.CharField(
         max_length=200,
@@ -101,7 +107,7 @@ class Recipe(models.Model):
 
 
 class IngredientInRecipe(models.Model):
-    """Модель для описания количества ингридиентов в отдельных рецептах"""
+    """Модель для описания количества ингредиентов в отдельных рецептах"""
     recipe = models.ForeignKey(
         Recipe,
         on_delete=models.CASCADE,
