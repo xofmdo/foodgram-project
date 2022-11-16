@@ -45,6 +45,7 @@ class Ingredient(models.Model):
 
     name = models.CharField(
         max_length=200,
+        db_index=True,
         verbose_name='Название ингредиента')
 
     measurement_unit = models.CharField(
@@ -104,6 +105,7 @@ class Recipe(models.Model):
     )
     created = models.DateTimeField(
         auto_now_add=True,
+        db_index=True,
         verbose_name='Дата публикации рецепта'
     )
 

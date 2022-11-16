@@ -4,7 +4,7 @@ from django.core.files.base import ContentFile
 from djoser.serializers import UserSerializer
 from rest_framework import serializers
 from rest_framework.serializers import ModelSerializer
-
+from djoser.serializers import UserCreateSerializer
 from recipes.models import (
     Tag, Ingredient, Recipe, IngredientInRecipe,
     Follow, TagInRecipe, Favorite, ShoppingCart,
@@ -46,7 +46,7 @@ class IngredientSerializer(ModelSerializer):
         fields = ('id', 'name', 'measurement_unit')
 
 
-class CustomUserSerializer(UserSerializer):
+class CustomUserSerializer(UserCreateSerializer):
     """Сериализатор для модели User."""
 
     is_subscribed = serializers.SerializerMethodField()
@@ -79,10 +79,6 @@ class CustomCreateUserSerializer(CustomUserSerializer):
                   'last_name', 'password')
         extra_kwargs = {'password': {'write_only': True}}
 
-    def create(self, validated_data):
-        """Метод создания пользователя"""
-
-        return User.objects.create_user(**validated_data)
 
 
 class IngredientInRecipeSerializer(serializers.ModelSerializer):
@@ -239,19 +235,10 @@ class CreateRecipeSerializer(serializers.ModelSerializer):
         IngredientInRecipe.objects.filter(recipe=instance).delete()
         TagInRecipe.objects.filter(recipe=instance).delete()
 
-        instance.name = validated_data.get('name', instance.name)
-        instance.text = validated_data.get('text', instance.text)
-        instance.image = validated_data.get('image', instance.image)
-        instance.cooking_time = validated_data.get(
-            'cooking_time', instance.cooking_time)
-        ingredients = validated_data.pop('ingredients')
-        tags = validated_data.pop('tags')
+        self.create_ingredients(validated_data.pop('ingredients'), instance)
+        self.create_tags(validated_data.pop('tags'), instance)
 
-        self.create_ingredients(ingredients, instance)
-        self.create_tags(tags, instance)
-
-        instance.save()
-        return instance
+        return super().update(instance, validated_data)
 
 
 class AdditionalForRecipeSerializer(serializers.ModelSerializer):
