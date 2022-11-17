@@ -30,7 +30,6 @@ INSTALLED_APPS = [
     'users.apps.UsersConfig',
     'drf_yasg',
     'django_filters',
-    'colorfield'
 ]
 
 INTERNAL_IPS = [
