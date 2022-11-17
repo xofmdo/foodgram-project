@@ -9,7 +9,7 @@ services:
       - ./.env
 
   backend:
-    image: xofmdo/foodgram:latest
+    image: xofmdo/foodgram_back:latest
     restart: always
     volumes:
       - data_value:/app/data/
@@ -21,11 +21,13 @@ services:
       - ./.env
 
   frontend:
-    image: kabashin/foodgram_front:latest
+    build:
+      context: ../frontend
+      dockerfile: Dockerfile
     volumes:
-      - ../frontend/:/app/result_build/
+        - ../frontend/:/app/result_build/
     depends_on:
-      - backend
+        - web
 
   nginx:
     image: nginx:1.19.3
