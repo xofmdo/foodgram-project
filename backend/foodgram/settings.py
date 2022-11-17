@@ -1,16 +1,18 @@
 import os
 
+from django.core.management.utils import get_random_secret_key
+from dotenv import load_dotenv
+
+
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
-SECRET_KEY = '4#!yype9r5-5c)%yv9k7s^^1++q7v$hdm1o%csxc=kh0auhj8n'
+SECRET_KEY = os.getenv('SECRET_KEY', get_random_secret_key())
 
 
-DEBUG = True
+DEBUG = bool(int(os.getenv('DEBUG', '0')))
 
-ALLOWED_HOSTS = ['*']
-
-
-# Application definition
+ALLOWED_HOSTS = ['localhost', '127.0.0.1', 'testserver', 'web']
+ALLOWED_HOSTS += [os.getenv('ALLOWED_HOST')]
 
 INSTALLED_APPS = [
     'django.contrib.admin',
@@ -27,7 +29,6 @@ INSTALLED_APPS = [
     'users.apps.UsersConfig',
     'drf_yasg',
     'django_filters',
-    'corsheaders',
     'colorfield'
 ]
 
@@ -69,19 +70,25 @@ TEMPLATES = [
 WSGI_APPLICATION = 'foodgram.wsgi.application'
 
 
-# Database
-# https://docs.djangoproject.com/en/2.2/ref/settings/#databases
-
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+        'ENGINE': os.getenv('DB_ENGINE', default='django.db.backends.postgresql'),
+        'NAME': os.getenv('DB_NAME', default='postgres'),
+        'USER': os.getenv('POSTGRES_USER', default='postgres'),
+        'PASSWORD': os.getenv('POSTGRES_PASSWORD', default='postgres'),
+        'HOST': os.getenv('DB_HOST', default='db'),
+        'PORT': os.getenv('DB_PORT', default='5432')
     }
 }
 
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.sqlite3',
+#         'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+#     }
+# }
+
 AUTH_USER_MODEL = 'users.User'
-# Password validation
-# https://docs.djangoproject.com/en/2.2/ref/settings/#auth-password-validators
 
 AUTH_PASSWORD_VALIDATORS = [
     {
@@ -99,9 +106,6 @@ AUTH_PASSWORD_VALIDATORS = [
 ]
 
 
-# Internationalization
-# https://docs.djangoproject.com/en/2.2/topics/i18n/
-
 LANGUAGE_CODE = 'ru-RU'
 
 TIME_ZONE = 'UTC'
@@ -112,9 +116,6 @@ USE_L10N = True
 
 USE_TZ = True
 
-
-# Static files (CSS, JavaScript, Images)
-# https://docs.djangoproject.com/en/2.2/howto/static-files/
 
 STATIC_URL = '/static/'
 STATIC_ROOT = os.path.join(BASE_DIR, 'static')
@@ -154,11 +155,5 @@ DJOSER = {
     },
 }
 
-
-CSV_FILES_DIR = os.path.join(BASE_DIR, 'data')
-
-CORS_URLS_REGEX = r'^/api/.*$'
-
-CORS_ALLOWED_ORIGINS = [
-    'http://localhost:3000',
-]
+BACKEND_DIR = os.path.join(BASE_DIR, 'backend')
+CSV_FILES_DIR = os.path.join(BACKEND_DIR, 'data')
