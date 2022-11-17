@@ -1,3 +1,4 @@
+from colorfield.fields import ColorField
 from django.contrib.auth import get_user_model
 from django.core.validators import (MinValueValidator, RegexValidator, )
 from django.db import models
@@ -23,8 +24,8 @@ class Tag(models.Model):
             )
         ],
         default='#006400',
-        help_text='Введите цвет тега. Например, #006400',)
-
+        help_text='Введите цвет тега. Например, #006400',
+    )
     slug = models.SlugField(
         max_length=100,
         unique=True,
