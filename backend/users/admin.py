@@ -10,4 +10,3 @@ class MyUserAdmin(UserAdmin):
                     'password')
     list_filter = ('username', 'email')
     search_fields = ('username', 'email')
-

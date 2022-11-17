@@ -80,7 +80,6 @@ class CustomCreateUserSerializer(CustomUserSerializer):
         extra_kwargs = {'password': {'write_only': True}}
 
 
-
 class IngredientInRecipeSerializer(serializers.ModelSerializer):
     """Сериализатор для модели ингредиентов в рецепте."""
 
