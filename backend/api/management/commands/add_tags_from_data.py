@@ -3,7 +3,7 @@ import csv
 from django.core.management.base import BaseCommand
 
 from foodgram.settings import CSV_FILES_DIR
-from recipes.models import Ingredient
+from recipes.models import Tag
 
 
 # python3 manage.py utils - команда для загрузки ингредиентов
@@ -15,16 +15,15 @@ class Command(BaseCommand):
 
     def handle(self, *args, **kwargs):
         with open(
-                f'{CSV_FILES_DIR}/ingredients.csv', encoding='utf-8'
+                f'{CSV_FILES_DIR}/tags.csv', encoding='utf-8'
         ) as file:
-            reader = csv.reader(file)
-            next(reader)
-            ingredients = [
-                Ingredient(
-                    name=row[0],
-                    measurement_unit=row[1],
+            csv_reader = csv.reader(file, delimiter=',', quotechar='"')
+            for row in csv_reader:
+                name = row[0]
+                color = row[1]
+                slug = row[2]
+                Tag.objects.create(
+                    name=name, color=color, slug=slug
                 )
-                for row in reader
-            ]
-            Ingredient.objects.bulk_create(ingredients)
-            print('Ингредиенты в базу данных загружены')
+        print('Теги в базу данных загружены')
+        print('ADD', Tag.objects.count(), 'tags')
