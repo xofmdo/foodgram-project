@@ -12,7 +12,7 @@ SECRET_KEY = os.getenv('SECRET_KEY', get_random_secret_key())
 
 DEBUG = bool(int(os.getenv('DEBUG', '0')))
 
-ALLOWED_HOSTS = os.getenv('ALLOWED_HOSTS', default='84.201.152.168')
+ALLOWED_HOSTS = ['*']
 
 INSTALLED_APPS = [
     'django.contrib.admin',
@@ -29,10 +29,6 @@ INSTALLED_APPS = [
     'users.apps.UsersConfig',
     'drf_yasg',
     'django_filters',
-]
-
-INTERNAL_IPS = [
-    'localhost', '127.0.0.1'
 ]
 
 
@@ -154,5 +150,4 @@ DJOSER = {
     },
 }
 
-BACKEND_DIR = os.path.join(BASE_DIR, 'backend')
-CSV_FILES_DIR = os.path.join(BACKEND_DIR, 'data')
+CSV_FILES_DIR = os.path.join(BASE_DIR, 'data')
