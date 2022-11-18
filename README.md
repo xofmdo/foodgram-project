@@ -1,4 +1,4 @@
-![foodgram-project-react Workflow Status](https://github.com/xofmdo/foodgram-project-react/actions/workflows/foodgram_workflow.yml/badge.svg)
+![foodgram-project-react Workflow Status](https://github.com/xofmdo/foodgram-project-react/actions/workflows/main.yml/badge.svg)
 # Продуктовый помощник Foodgram 
 
 
