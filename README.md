@@ -107,12 +107,12 @@ docker-compose ps
 ```
 Назначение контейнеров:  
 
-|          IMAGES           | NAMES                |        DESCRIPTIONS         |
-|:-------------------------:|:---------------------|:---------------------------:|
-|       nginx:1.19.3        | infra-_nginx_1       |   контейнер HTTP-сервера    |
-|       postgres:12.4       | infra-_db_1          |    контейнер базы данных    |
-| kabashin/back3:latest     | infra-_backend_1     | контейнер приложения Django |
-| kabashin/front:latest     | infra-_frontend_1    | контейнер приложения React  |
+|          IMAGES                  | NAMES                |        DESCRIPTIONS         |
+|:--------------------------------:|:---------------------|:---------------------------:|
+|       nginx:1.19.3               | infra-_nginx_1       |   контейнер HTTP-сервера    |
+|       postgres:12.4              | infra-_db_1          |    контейнер базы данных    |
+| xofmdo/foodgram_back:latest      | infra-_backend_1     | контейнер приложения Django |
+| xofmdo/foodgram_ront:latest      | infra-_frontend_1    | контейнер приложения React  |
 
 
 ### Выполните миграции:
