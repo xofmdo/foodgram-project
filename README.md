@@ -180,4 +180,4 @@ docker-compose exec backend python manage.py add_ingidients_from_data
 ### Автор:  
 _Кузьмич Александр_<br>
 **email**: _sashakuzmich69@yandex.ru_<br>
-**telegram** _@xofmdo_
+**telegram** _@xofmdo_ 
